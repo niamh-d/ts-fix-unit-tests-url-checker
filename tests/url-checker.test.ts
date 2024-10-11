@@ -1,6 +1,6 @@
 import { LinkChecker } from '../src/url-checker'
 
-xdescribe('LinkChecker', () => {
+describe('LinkChecker', () => {
   let linkChecker: LinkChecker
 
   beforeEach(() => {
