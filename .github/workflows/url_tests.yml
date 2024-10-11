@@ -1,4 +1,4 @@
-name: Run Tests
+name: URL checker tests
 
 # Trigger the workflow on every push or pull request to the main branch
 on:

@@ -29,10 +29,10 @@ describe('calculatePasswordStrength', () => {
     let password: string
     let passwordTwo: string
 
-   test('shorter complex password will be classified as "Strong!"', () => {
-     password = 'qwERTY!123'
-     expect(calculatePasswordStrength(password)).toBe('Strong!')
-   })
+    test('shorter complex password will be classified as "Strong!"', () => {
+      password = 'qwERTY!123'
+      expect(calculatePasswordStrength(password)).toBe('Strong!')
+    })
 
     test('longer complex password will be classified as "Very strong!"', () => {
       password = 'qwERTY!12345'
