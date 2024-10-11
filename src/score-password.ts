@@ -1,16 +1,16 @@
 enum Strength {
-    VERY_WEAK = "Very weak!",
+    REJECTED = "Rejected!",
     WEAK = "Weak!",
     MEDIUM = "Medium!",
     STRONG = "Strong!",
     VERY_STRONG = "Very strong!",
-    REJECTED = "Rejected!"
 }
 
 // magic numbers
 const basicBonus = 1;
 const mediumBonus = 2;
 const extraBonus = 3;
+const min_pw_len = 8;
 
 // Returns a score from 0 to 3 depending on the length of the password
 function scoreLength(pw: string): number {
@@ -18,8 +18,7 @@ function scoreLength(pw: string): number {
     const len = pw.length
     if(len >= 20) return extraBonus;
     if(len >= 12) return mediumBonus;
-    if(len >= 8) return basicBonus;
-    return 0;
+    return len >= min_pw_len? basicBonus: 0;
 }
 
 // returns true for passwords that have both upper and lower case characters
@@ -47,22 +46,26 @@ function strengthLabel(strength: number): string {
     if(strength >= 6) return Strength.STRONG
     if(strength >= 4) return Strength.MEDIUM
     if(strength === 3) return Strength.WEAK
-    if(strength < 3) return Strength.VERY_WEAK
+    if(strength <= 2) return Strength.REJECTED
 }
 
+// automatically rejects certain password types
 function applyRejectionCriteria(pw: string): boolean {
+    const lenScore = scoreLength(pw)
+    // rejects password of length 7 characters or shorter
+    if(lenScore === 0) return true;
     // rejects password made up only of numbers
     if(/^\d+$/.test(pw)) return true;
-    // rejects passwords that are shorter than 8 characters and do not mix case
-    return scoreLength(pw) < 2 && !checkMixedCase(pw);
+    // rejects passwords that are shorter than 12 characters and do not mix case
+    return lenScore < 2 && !checkMixedCase(pw);
 }
 
 export default function calculatePasswordStrength(password: string): string {
 
-    if(applyRejectionCriteria(password)) return Strength.REJECTED
-
     //MAX SCORE POSSIBLE = 9
     let strength = 0;
+
+    if(applyRejectionCriteria(password)) return Strength.REJECTED
 
     strength += scoreLength(password)
     strength += scoreChars(password)
